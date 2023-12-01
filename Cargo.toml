@@ -1,0 +1,14 @@
+[package]
+name = "advent-of-code-2023"
+version = "0.1.0"
+edition = "2021"
+authors = ["Alexis Le Provost <alexis.leprovost@outlook.com>"]
+
+
+[dependencies]
+thiserror = "1.0.37"
+eyre = "0.6.8"
+color-eyre = "0.6.2"
+clap = { version = "4.0.29", features = ["derive"] }
+enum_dispatch = "0.3.8"
+strum = { version = "0.24.1", features = ["derive"] }
