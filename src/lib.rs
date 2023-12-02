@@ -16,6 +16,10 @@ pub enum Error {
     EyreReport(#[from] eyre::ErrReport),
     #[error(transparent)]
     IoError(#[from] io::Error),
+    #[error(transparent)]
+    ParseError(#[from] strum::ParseError),
+    #[error(transparent)]
+    ParseIntError(#[from] std::num::ParseIntError),
     #[error("Invalid input: {0}")]
     InvalidInput(String),
     #[error("No solution found: {0}")]
@@ -29,6 +33,7 @@ pub type Result<T> = std::result::Result<T, Error>;
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
 pub enum Day {
     Day01,
+    Day02,
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
@@ -44,5 +49,7 @@ pub fn solve(path: &Path, day: Day, puzzle_part: PuzzlePart) -> Result<String> {
     match (day, puzzle_part) {
         (Day::Day01, PuzzlePart::Part1) => day01::solve_part1(reader),
         (Day::Day01, PuzzlePart::Part2) => day01::solve_part2(reader),
+        (Day::Day02, PuzzlePart::Part1) => day02::solve_part1(reader),
+        (Day::Day02, PuzzlePart::Part2) => day02::solve_part2(reader),
     }
 }
