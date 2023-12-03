@@ -1,50 +1,45 @@
-use std::io::{BufRead, BufReader, Read};
+const RADIX: u32 = 10;
+const NUMBERS: [&str; 9] = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
 
-use crate::{Error, Result};
-
-pub fn solve_part1<R: Read>(reader: BufReader<R>) -> Result<String> {
-    let digits = reader
-        .lines()
-        .map(|line| {
-            let line = line?;
-
-            let radix = 10;
-            let mut digits = line.chars().filter_map(|c| c.to_digit(radix));
-
-            let first = digits.next().ok_or(Error::InvalidInput(line.clone()))?;
-            let last = digits.last().unwrap_or(first);
-
-            Ok((first * radix + last) as usize)
-        })
-        .collect::<Result<Vec<_>>>()?;
-
-    Ok(digits.iter().sum::<usize>().to_string())
+fn get_input() -> &'static str {
+    include_str!("../../data/day01.txt")
 }
 
-pub fn solve_part2<R: Read>(reader: BufReader<R>) -> Result<String> {
-    let digits = reader
+pub fn solve_part1() {
+    let solution = get_input()
         .lines()
-        .map(|line| {
-            let line = line?;
+        .map(|s| {
+            let mut digits = s.chars().filter_map(|c| c.to_digit(RADIX));
 
-            let radix = 10;
-            let numbers = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+            let first = digits.next().unwrap();
+            let last = digits.last().unwrap_or(first);
 
-            let mut digits = line.chars().enumerate().filter_map(|(i, c)| {
-                c.to_digit(radix).or_else(|| {
-                    numbers
+            (first * RADIX + last) as usize
+        })
+        .sum::<usize>();
+
+    println!("{solution}");
+}
+
+pub fn solve_part2() {
+    let solution = get_input()
+        .lines()
+        .map(|s| {
+            let mut digits = s.chars().enumerate().filter_map(|(i, c)| {
+                c.to_digit(RADIX).or_else(|| {
+                    NUMBERS
                         .iter()
                         .enumerate()
-                        .find_map(|(j, number)| line[i..].starts_with(number).then_some((j + 1) as u32))
+                        .find_map(|(j, number)| s[i..].starts_with(number).then_some((j + 1) as u32))
                 })
             });
 
-            let first = digits.next().ok_or(Error::InvalidInput(line.clone()))?;
+            let first = digits.next().unwrap();
             let last = digits.last().unwrap_or(first);
 
-            Ok((first * radix + last) as usize)
+            (first * RADIX + last) as usize
         })
-        .collect::<Result<Vec<_>>>()?;
+        .sum::<usize>();
 
-    Ok(digits.iter().sum::<usize>().to_string())
+    println!("{solution}");
 }

@@ -1,9 +1,7 @@
 use std::collections::HashMap;
-use std::io::{BufRead, BufReader, Read};
 
 use strum::EnumString;
 
-use crate::{Error, Result};
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, EnumString)]
 #[strum(serialize_all = "lowercase")]
@@ -18,45 +16,40 @@ struct Record {
     sets: Vec<HashMap<Color, usize>>,
 }
 
-fn parse_input<R: Read>(reader: BufReader<R>) -> Result<Vec<Record>> {
-    reader
+fn get_input() -> &'static str {
+    include_str!("../../data/day02.txt")
+}
+
+fn parse_input(input: &str) -> Vec<Record> {
+    input
         .lines()
         .map(|s| {
-            let s = &s?[5..];
+            let s = &s[5..];
 
-            let Some((id, s)) = s.split_once(':') else {
-                return Err(Error::InvalidInput(s.to_string()));
-            };
+            let (id, s) = s.split_once(':').unwrap();
 
-            let id = id.parse()?;
+            let id = id.parse().unwrap();
             let sets = s
                 .split(';')
                 .map(|s| {
-                    let set = s
-                        .split(',')
+                    s.split(',')
                         .map(|s| {
-                            let Some((number, color)) = s.trim().split_once(' ') else {
-                                return Err(Error::InvalidInput(s.to_string()));
-                            };
+                            let (number, color) = s.trim().split_once(' ').unwrap();
 
-                            let number = number.parse::<usize>()?;
-                            let color = color.parse::<Color>()?;
-
-                            Ok((color, number))
+                            (color.parse::<Color>().unwrap(), number.parse::<usize>().unwrap())
                         })
-                        .collect::<Result<HashMap<_, _>>>()?;
-
-                    Ok(set)
+                        .collect()
                 })
-                .collect::<Result<Vec<_>>>()?;
+                .collect();
 
-            Ok(Record { id, sets })
+            Record { id, sets }
         })
         .collect()
 }
 
-pub fn solve_part1<R: Read>(reader: BufReader<R>) -> Result<String> {
-    let records = parse_input(reader)?;
+pub fn solve_part1() {
+    let input = get_input();
+    let records = parse_input(input);
 
     let solution = records
         .iter()
@@ -71,11 +64,12 @@ pub fn solve_part1<R: Read>(reader: BufReader<R>) -> Result<String> {
         })
         .sum::<usize>();
 
-    Ok(solution.to_string())
+    println!("{solution}");
 }
 
-pub fn solve_part2<R: Read>(reader: BufReader<R>) -> Result<String> {
-    let records = parse_input(reader)?;
+pub fn solve_part2() {
+    let input = get_input();
+    let records = parse_input(input);
 
     let solution = records
         .iter()
@@ -92,5 +86,5 @@ pub fn solve_part2<R: Read>(reader: BufReader<R>) -> Result<String> {
         })
         .sum::<usize>();
 
-    Ok(solution.to_string())
+    println!("{solution}");
 }

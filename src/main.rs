@@ -1,7 +1,4 @@
-use std::path::PathBuf;
-
-use advent_of_code_2023 as aoc;
-use advent_of_code_2023::{Day, PuzzlePart};
+use advent_of_code_2023::Day;
 
 use clap::Parser;
 use eyre::Result;
@@ -11,18 +8,15 @@ use eyre::Result;
 pub struct Opt {
     day: Day,
     #[arg(short, long)]
-    input: PathBuf,
-    #[arg(short, long, default_value = "part1")]
-    puzzle_part: PuzzlePart,
+    second_part: bool,
 }
 
 fn main() -> Result<()> {
     color_eyre::install()?;
 
     let opt = Opt::parse();
-    let solution = aoc::solve(&opt.input, opt.day, opt.puzzle_part)?;
 
-    println!("{solution}");
+    advent_of_code_2023::solve(opt.day, opt.second_part);
 
     Ok(())
 }
