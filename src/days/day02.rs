@@ -1,7 +1,5 @@
-use std::{
-    collections::HashMap,
-    io::{BufRead, BufReader, Read},
-};
+use std::collections::HashMap;
+use std::io::{BufRead, BufReader, Read};
 
 use strum::EnumString;
 
@@ -34,7 +32,6 @@ fn parse_input<R: Read>(reader: BufReader<R>) -> Result<Vec<Record>> {
             let sets = s
                 .split(';')
                 .map(|s| {
-
                     let set = s
                         .split(',')
                         .map(|s| {
