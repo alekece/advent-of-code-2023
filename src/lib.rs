@@ -9,6 +9,7 @@ pub enum Day {
     Day01,
     Day02,
     Day03,
+    Day04,
 }
 
 pub fn solve(day: Day, second_part: bool) {
@@ -19,5 +20,7 @@ pub fn solve(day: Day, second_part: bool) {
         (Day::Day02, true) => day02::solve_part2(),
         (Day::Day03, false) => day03::solve_part1(),
         (Day::Day03, true) => day03::solve_part2(),
+        (Day::Day04, false) => day04::solve_part1(),
+        (Day::Day04, true) => day04::solve_part2(),
     }
 }
