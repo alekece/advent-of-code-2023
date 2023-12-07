@@ -12,3 +12,4 @@ color-eyre = "0.6.2"
 clap = { version = "4.0.29", features = ["derive"] }
 enum_dispatch = "0.3.8"
 strum = { version = "0.24.1", features = ["derive"] }
+itertools = "0.12.0"
